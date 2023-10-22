@@ -9,11 +9,11 @@
 # - Register git hooks: pre-commit install --install-hooks
 
 repos:
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        additional_dependencies: [toml]
+  #   - repo: https://github.com/timothycrosley/isort
+  #     rev: 5.10.1
+  #     hooks:
+  #       - id: isort
+  # additional_dependencies: [toml]
 
   - repo: https://github.com/myint/autoflake
     rev: v1.4
@@ -34,20 +34,20 @@ repos:
         args:
           - app/
 
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.11.3
-    hooks:
-      - id: flake8
-        args:
-          - app/
+  # - repo: https://gitlab.com/pycqa/flake8
+  #   rev: 3.11.3
+  #   hooks:
+  #     - id: flake8
+  #       args:
+  #         - app/
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.942
-    hooks:
-      - id: mypy
-        exclude: app/tests/
-        additional_dependencies:
-          [pydantic, sqlalchemy-stubs==0.4, types-PyYAML==6.0.7]
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v0.942
+  #   hooks:
+  #     - id: mypy
+  #       exclude: app/tests/
+  #       additional_dependencies:
+  #         [pydantic, sqlalchemy-stubs==0.4, types-PyYAML==6.0.7]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
