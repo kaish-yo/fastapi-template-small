@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile.local"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"njpwerner.autodocstring",
+				"ms-azuretools.vscode-docker",
+				"henriiik.docker-linter",
+				"janisdd.vscode-edit-csv",
+				"donjayamanne.git-extension-pack",
+				"ms-python.isort",
+				"nickdemayo.vscode-json-editor",
+				"ccimage.jsonviewer",
+				"magicstack.MagicPython",
+				"yzhang.markdown-all-in-one",
+				"bierner.markdown-preview-github-styles",
+				"christian-kohler.path-intellisense",
+				"esbenp.prettier-vscode",
+				"donjayamanne.python-extension-pack",
+				"Bar.python-import-helper",
+				"mgesbert.python-path",
+				"alexcvzz.vscode-sqlite",
+				"mtxr.sqltools-driver-sqlite",
+				"shuworks.vscode-table-formatter",
+				"ansenhuang.vscode-view-readme",
+				"mosapride.zenkaku",
+				"ICS.japanese-proofreading"
+			]
+		}
+	}
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}
