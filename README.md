@@ -1,4 +1,4 @@
-# Fast API template for simple REST APIs
+# FastAPI template for simple REST APIs
 
 小規模な開発でなるべく全体像がわかりやすいように最小限の機能を実装している。
 そのため、以下のような機能が必要な場合は別途改変が必要であることに留意してください。
