@@ -32,7 +32,8 @@
 				"shuworks.vscode-table-formatter",
 				"ansenhuang.vscode-view-readme",
 				"mosapride.zenkaku",
-				"ICS.japanese-proofreading"
+				"ICS.japanese-proofreading",
+				"ms-python.black-formatter"
 			]
 		}
 	}

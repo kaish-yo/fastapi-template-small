@@ -5,10 +5,11 @@ from sqlalchemy import DateTime, event, func, orm
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.sql.functions import current_timestamp
 
-from app.core.logger import get_logger
+from logging import getLogger
+
 # from app.core.utils import get_ulid
 
-logger = get_logger(__name__)
+logger = getLogger(__name__)
 
 
 class Base(DeclarativeBase):
@@ -18,7 +19,9 @@ class Base(DeclarativeBase):
 class ModelBaseMixin:
     # id: Mapped[str] = mapped_column(String(32), primary_key=True, default=get_ulid)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=current_timestamp(),
+        DateTime,
+        nullable=False,
+        server_default=current_timestamp(),
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -32,7 +35,9 @@ class ModelBaseMixin:
 class ModelBaseMixinWithoutDeletedAt:
     # id: Mapped[str] = mapped_column(String(32), primary_key=True, default=get_ulid)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=current_timestamp(),
+        DateTime,
+        nullable=False,
+        server_default=current_timestamp(),
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -47,7 +52,7 @@ def _add_filtering_deleted_at(execute_state: Any) -> None:
     """
     Applys logical delete (soft delete) automatically.
     You can get deleted data too if you query like the following:
-    
+
     select(...).filter(...).execution_options(include_deleted=True).
     """
     if (

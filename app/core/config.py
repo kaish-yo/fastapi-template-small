@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     LOGGER_CONFIG_PATH: str = os.path.join(BASE_DIR_PATH, "logger_config.yaml")
     SENTRY_SDK_DNS: str = ""
     MIGRATIONS_DIR_PATH: str = os.path.join(ROOT_DIR_PATH, "alembic")
-    IS_API_GATEWAY: bool = False 
+    IS_API_GATEWAY: bool = False
 
     class Config:
         env_file = ".env"

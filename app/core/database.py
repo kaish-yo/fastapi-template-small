@@ -2,13 +2,14 @@ import pyodbc
 from collections.abc import Generator
 import urllib
 from sqlalchemy import create_engine, text
+
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
-from app.core.logger import get_logger
+from logging import getLogger
 
-logger = get_logger(__name__)
+logger = getLogger(__name__)
 
 # database info
 server = settings.SERVER_URI
@@ -19,14 +20,16 @@ password = settings.DATABASE_PASSWORD
 driver = pyodbc.drivers()[-1]
 
 # define the connection string to the SQL Server
-connection_string = f'Driver={driver};Server=tcp:{server},1433;Database={database};Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
-connection_string = connection_string.replace('\r', '').replace('\n', '') # for some reason some special charactors are added and causes errors without this line of code.
+connection_string = f"Driver={driver};Server=tcp:{server},1433;Database={database};Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+connection_string = connection_string.replace("\r", "").replace(
+    "\n", ""
+)  # for some reason some special charactors are added and causes errors without this line of code.
 
-# connctor engine 
+# connctor engine
 try:
     odbc_connect = urllib.parse.quote_plus(connection_string)
-    engine = create_engine('mssql+pyodbc:///?odbc_connect=' + odbc_connect)
-    
+    engine = create_engine("mssql+pyodbc:///?odbc_connect=" + odbc_connect)
+
     # create session which will be used in crud.py
     session_factory = sessionmaker(bind=engine)
 except Exception as e:
@@ -34,6 +37,7 @@ except Exception as e:
 
 # Base class which will be used in model.py
 # Base = declarative_base()
+
 
 def get_db() -> Generator[Session, None, None]:
     """endpointからアクセス時に、Dependで呼び出しdbセッションを生成する
@@ -52,9 +56,10 @@ def get_db() -> Generator[Session, None, None]:
         if db:
             db.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # connection test
     with engine.connect() as conn:
-        rs = conn.execute(text('SELECT @@VERSION as version'))
+        rs = conn.execute(text("SELECT @@VERSION as version"))
         for row in rs:
             logger.info(row)

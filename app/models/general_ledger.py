@@ -6,7 +6,8 @@ from sqlalchemy.types import BigInteger, DateTime, Float, Integer, String
 from app.models._base import Base, ModelBaseMixin
 
 # table names
-GL_TABLE = 'general_ledger'
+GL_TABLE = "general_ledger"
+
 
 class GeneralLedger(Base, ModelBaseMixin):
     __tablename__ = GL_TABLE
@@ -20,20 +21,22 @@ class GeneralLedger(Base, ModelBaseMixin):
     amount: Mapped[float] = mapped_column(Float(), nullable=False)
     creator_id: Mapped[int] = mapped_column(Integer(), nullable=False)
     approver_id: Mapped[int] = mapped_column(Integer(), nullable=False)
-    approved_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True) # approve later
-    
+    approved_at: Mapped[datetime] = mapped_column(
+        DateTime(), nullable=True
+    )  # approve later
+
     def to_dict(self):
         return {
-            'record_id': self.record_id,
-            'journal_id': self.journal_id,
-            'account_id': self.account_id,
-            'account_name': self.account_name,
-            'subaccount_id': self.subaccount_id,
-            'vat_id': self.vat_id,
-            'debter_creditor': self.debter_creditor,
-            'amount': self.amount,
-            'creator_id': self.creator_id,
-            'approver_id': self.approver_id,
-            'created_at': self.created_at,
-            'approved_at': self.approved_at
+            "record_id": self.record_id,
+            "journal_id": self.journal_id,
+            "account_id": self.account_id,
+            "account_name": self.account_name,
+            "subaccount_id": self.subaccount_id,
+            "vat_id": self.vat_id,
+            "debter_creditor": self.debter_creditor,
+            "amount": self.amount,
+            "creator_id": self.creator_id,
+            "approver_id": self.approver_id,
+            "created_at": self.created_at,
+            "approved_at": self.approved_at,
         }

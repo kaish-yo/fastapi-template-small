@@ -1,24 +1,23 @@
 import logging
+from app.core.logger.custom_logging import CustomizeLogger
+from pathlib import Path
 
 import sentry_sdk
 from debug_toolbar.middleware import DebugToolbarMiddleware
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from mangum import Mangum
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
-from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 from starlette.middleware.cors import CORSMiddleware
 
 # from app.api.endpoints import auth, query
 from app.api.endpoints import query
 from app.core.config import settings
-from app.core.logger import get_logger
 
 from app.core.database import engine
 from app.models._base import Base
-# loggingセットアップ
 
-logger = get_logger(__name__)
+# loggingセットアップ
 
 
 class NoParsingFilter(logging.Filter):
@@ -26,25 +25,32 @@ class NoParsingFilter(logging.Filter):
         return not record.getMessage().find("/docs") >= 0
 
 
-# /docsのログが大量に表示されるのを防ぐ
-logging.getLogger("uvicorn.access").addFilter(NoParsingFilter())
+Base.metadata.create_all(
+    bind=engine, checkfirst=True
+)  # if you want to narrow down the tables to create, use 'tables=[models.<Class>]
 
-sentry_logging = LoggingIntegration(level=logging.INFO, event_level=logging.ERROR)
 
-Base.metadata.create_all(bind=engine, checkfirst=True) # if you want to narrow down the tables to create, use 'tables=[models.<Class>]
+# init FastAPI
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title=f"[{settings.ENV}]{settings.TITLE}",
+        version=settings.VERSION,
+        debug=settings.DEBUG or False,
+        # root_path=f"{settings.API_GATEWAY_STAGE_PATH}/",
+    )
+    # Set up custom logging
+    config_path = Path(__file__).with_name("logging_config.json")
+    app.logger = CustomizeLogger.make_logger(config_path)
+    return app
 
-app = FastAPI(
-    title=f"[{settings.ENV}]{settings.TITLE}",
-    version=settings.VERSION,
-    debug=settings.DEBUG or False,
-    # root_path=f"{settings.API_GATEWAY_STAGE_PATH}/",
-)
+
+app = create_app()
 
 
 if settings.SENTRY_SDK_DNS:
     sentry_sdk.init(
         dsn=settings.SENTRY_SDK_DNS,
-        integrations=[sentry_logging, SqlalchemyIntegration()],
+        integrations=[SqlalchemyIntegration()],
         environment=settings.ENV,
     )
 
@@ -60,9 +66,10 @@ app.add_middleware(
 )
 
 
-
 @app.get("/", tags=["info"])
-def get_info() -> dict[str, str]:
+def get_info(request: Request, response: Response) -> dict[str, str]:
+    logger = request.app.logger
+    logger.debug("The DEBUG mode is turned on.")
     return {"title": settings.TITLE, "version": settings.VERSION}
 
 

@@ -6,7 +6,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.models._base import Base, ModelBaseMixin
 
 # table names
-USER_TABLE = 'users'
+USER_TABLE = "users"
+
 
 class User(Base, ModelBaseMixin):
     __tablename__ = USER_TABLE
@@ -15,12 +16,12 @@ class User(Base, ModelBaseMixin):
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     last_title: Mapped[str] = mapped_column(String(50), nullable=True)
     join_date: Mapped[date] = mapped_column(Date, nullable=False)
-    
+
     def to_dict(self):
         return {
-            'user_id': self.user_id,
-            'user_name': self.user_name,
-            'title': self.title,
-            'last_title': self.last_title,
-            'join_date': self.join_date
+            "user_id": self.user_id,
+            "user_name": self.user_name,
+            "title": self.title,
+            "last_title": self.last_title,
+            "join_date": self.join_date,
         }

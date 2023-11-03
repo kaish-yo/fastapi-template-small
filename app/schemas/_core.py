@@ -18,13 +18,13 @@ class BaseSchema(BaseModel):
     #     全ての項目に対して、pre処理を行いたい場合の例
     #     '''
     #     if isinstance(v, Any):
-      # @validator("*", pre=True)
+    # @validator("*", pre=True)
     # def split_comma(cls, v):
     #     '''
     #     カンマでsplitする例
     #     '''
     #     if isinstance(v, str):
-      class Config:
+    class Config:
         """
         Converts camel case <-> snake case
         # キャメルケース　<-> スネークケースの自動変換

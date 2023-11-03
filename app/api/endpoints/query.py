@@ -9,10 +9,10 @@ router = APIRouter()
 #     messages = []
 #     for prompt in init_prompt:
 #         messages.append(prompt)
-    
+
 #     # reflect the request
 #     messages.append({"role": "user", "content": message.message})
-    
+
 #     # request the answer to the ChatGPT
 #     response = openai.ChatCompletion.create(
 #         model="gpt-3.5-turbo",
