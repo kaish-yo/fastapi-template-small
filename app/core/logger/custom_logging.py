@@ -1,10 +1,14 @@
 # Custom Logger Using Loguru
-from app.core.config import settings
+import json
 import logging
 import sys
 from pathlib import Path
+
 from loguru import logger
-import json
+
+from app.core.config import get_settings
+
+settings = get_settings()
 
 
 class InterceptHandler(logging.Handler):
@@ -40,7 +44,6 @@ class CustomizeLogger:
 
         logger = cls.customize_logging(
             logging_config.get("path"),
-            # level=logging_config.get("level"),
             level="DEBUG" if settings.DEBUG else "INFO",
             retention=logging_config.get("retention"),
             rotation=logging_config.get("rotation"),

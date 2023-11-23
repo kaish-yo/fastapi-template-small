@@ -1,14 +1,15 @@
-import pyodbc
-from collections.abc import Generator
 import urllib
-from sqlalchemy import create_engine, text
+from collections.abc import Generator
+from logging import getLogger
 
+import pyodbc
+from sqlalchemy import create_engine, text
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.core.config import settings
-from logging import getLogger
+from app.core.config import get_settings
 
+settings = get_settings()
 logger = getLogger(__name__)
 
 # database info

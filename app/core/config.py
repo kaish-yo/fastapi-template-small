@@ -1,5 +1,4 @@
 import os
-from functools import lru_cache
 from pathlib import Path
 
 from pydantic_settings import BaseSettings
@@ -32,11 +31,8 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "allow"  # this allows environment variables only present in .env file in local development.
 
 
-@lru_cache
 def get_settings() -> Settings:
     return Settings()
-
-
-settings = get_settings()

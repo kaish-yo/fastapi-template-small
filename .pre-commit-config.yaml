@@ -9,11 +9,10 @@
 # - Register git hooks: pre-commit install --install-hooks
 
 repos:
-  #   - repo: https://github.com/timothycrosley/isort
-  #     rev: 5.10.1
-  #     hooks:
-  #       - id: isort
-  # additional_dependencies: [toml]
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1 # `isort`のバージョンを指定
+    hooks:
+      - id: isort
 
   - repo: https://github.com/myint/autoflake
     rev: v1.4
@@ -27,12 +26,12 @@ repos:
           - --ignore-init-module-imports
           - --remove-unused-variables
 
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-      - id: black
-        args:
-          - app/
+  # - repo: https://github.com/psf/black
+  #   rev: 22.3.0
+  #   hooks:
+  #     - id: black
+  #       args:
+  #         - app/
 
   # - repo: https://gitlab.com/pycqa/flake8
   #   rev: 3.11.3

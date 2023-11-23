@@ -1,5 +1,4 @@
 import logging
-from app.core.logger.custom_logging import CustomizeLogger
 from pathlib import Path
 
 import sentry_sdk
@@ -12,14 +11,13 @@ from starlette.middleware.cors import CORSMiddleware
 
 # from app.api.endpoints import auth, query
 from app.api.endpoints import query
-from app.core.config import settings
-
+from app.core.config import get_settings
 from app.core.database import engine
+from app.core.logger.custom_logging import CustomizeLogger
 from app.models._base import Base
 
+
 # loggingセットアップ
-
-
 class NoParsingFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
         return not record.getMessage().find("/docs") >= 0
@@ -29,6 +27,8 @@ Base.metadata.create_all(
     bind=engine, checkfirst=True
 )  # if you want to narrow down the tables to create, use 'tables=[models.<Class>]
 
+# 環境変数など
+settings = get_settings()
 
 # init FastAPI
 def create_app() -> FastAPI:
@@ -39,7 +39,11 @@ def create_app() -> FastAPI:
         # root_path=f"{settings.API_GATEWAY_STAGE_PATH}/",
     )
     # Set up custom logging
-    config_path = Path(__file__).with_name("logging_config.json")
+    config_path = Path(__file__).with_name(
+        "logging_config.json"
+        if settings.ENV != "local"
+        else "logging_config_local.json"
+    )
     app.logger = CustomizeLogger.make_logger(config_path)
     return app
 
