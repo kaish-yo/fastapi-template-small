@@ -28,13 +28,8 @@ pip install pre-commit
 pre-commit install
 ```
 
-#### 注意
-
-Black Formatter のみ自動修正が行われないため、エラーが出た場合は以下コマンドを実行した上で再度 add でステージング、そして commit をする必要がある点に注意する。
-
-```bash
-black app
-```
+上記を済ませると、git commit 実行時に pre-commit-config.yml で定義したチェックが自動で実行される。\
+修正事項が出てきた場合、再度 add, commit を実行した上で push を実行する。また、自動修正されないエラーが検出された場合は、手動で該当箇所を修正して、add, commit を通す必要がある点に注意。
 
 ### Build in local environment
 
