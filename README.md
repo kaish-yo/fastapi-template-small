@@ -16,7 +16,7 @@
 
 ### Install pre-commit
 
-1. pre-commit によるチェックを有効化する場合は、以下のコマンドによりローカル PC に pre-commit をインストールする
+1. pre-commit によるチェックを有効化するため、以下のコマンドによりローカル PC に pre-commit をインストールする
 
 ```bash
 pip install pre-commit
@@ -28,7 +28,16 @@ pip install pre-commit
 pre-commit install
 ```
 
+#### 注意
+
+Black Formatter のみ自動修正が行われないため、エラーが出た場合は以下コマンドを実行した上で再度 add でステージング、そして commit をする必要がある点に注意する。
+
+```bash
+black app
+```
+
 ### Build in local environment
 
 1. `.env`を`.env.example`を参考に作成し、組み込む環境変数を定義する
-2. docker-compose-local.yml をベースに、devcontainer を立ち上げる
+2. [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)を VSCode にインストールし、`Ctrl+Shift+P` でメニューを開いて`Dev Containers: Reopen in Container`を実行する
+3. 開発環境のコンテナが立ち上がる

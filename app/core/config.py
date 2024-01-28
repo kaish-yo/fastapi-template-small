@@ -28,10 +28,14 @@ class Settings(BaseSettings):
     SENTRY_SDK_DNS: str = ""
     MIGRATIONS_DIR_PATH: str = os.path.join(ROOT_DIR_PATH, "alembic")
     IS_API_GATEWAY: bool = False
+    NEXTAUTH_SECRET: str = "secret"
+    NEXTAUTH_URL: str = "http://localhost:3000"
 
     class Config:
         env_file = ".env"
-        extra = "allow"  # this allows environment variables only present in .env file in local development.
+        # The following variable allows environment variables only present in .env
+        # file in local development.
+        extra = "allow"
 
 
 def get_settings() -> Settings:

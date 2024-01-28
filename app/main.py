@@ -3,18 +3,22 @@ from pathlib import Path
 
 import sentry_sdk
 from debug_toolbar.middleware import DebugToolbarMiddleware
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Response
 from mangum import Mangum
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+
+# from app.core.database import engine
+# from app.models._base import Base
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 from starlette.middleware.cors import CORSMiddleware
 
-# from app.api.endpoints import auth, query
-from app.api.endpoints import query
-from app.core.config import get_settings
-from app.core.database import engine
-from app.core.logger.custom_logging import CustomizeLogger
-from app.models._base import Base
+load_dotenv()
+
+
+from app.api.endpoints import health_check, query  # noqa: E402
+from app.core.config import get_settings  # noqa: E402
+from app.core.logger.custom_logging import CustomizeLogger  # noqa: E402
 
 
 # loggingセットアップ
@@ -23,12 +27,13 @@ class NoParsingFilter(logging.Filter):
         return not record.getMessage().find("/docs") >= 0
 
 
-Base.metadata.create_all(
-    bind=engine, checkfirst=True
-)  # if you want to narrow down the tables to create, use 'tables=[models.<Class>]
+# Base.metadata.create_all(
+#     bind=engine, checkfirst=True
+# )  # if you want to narrow down the tables to create, use 'tables=[models.<Class>]
 
 # 環境変数など
 settings = get_settings()
+
 
 # init FastAPI
 def create_app() -> FastAPI:
@@ -61,10 +66,12 @@ if settings.SENTRY_SDK_DNS:
 
 app.add_middleware(SentryAsgiMiddleware)
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[str(origin) for origin in settings.CORS_ORIGINS],
     allow_origin_regex=r"^https?:\/\/([\w\-\_]{1,}\.|)example\.com",
+    allow_credentials=True,  # フロントエンドとバックエンドでcookieを共有するために必要.
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -79,6 +86,7 @@ def get_info(request: Request, response: Response) -> dict[str, str]:
 
 # app.include_router(auth.router, tags=["Auth"], prefix="/auth")
 app.include_router(query.router, tags=["Query"], prefix="/users")
+app.include_router(health_check.router, tags=["healthcheck"], prefix="/auth")
 
 if settings.DEBUG:
     app.add_middleware(
@@ -86,5 +94,7 @@ if settings.DEBUG:
         panels=["debug_toolbar.panels.sqlalchemy.SQLAlchemyPanel"],
     )
 
+if settings.IS_API_GATEWAY:
+    handler = Mangum(app)
 if settings.IS_API_GATEWAY:
     handler = Mangum(app)

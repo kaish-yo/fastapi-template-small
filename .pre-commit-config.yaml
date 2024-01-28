@@ -9,29 +9,40 @@
 # - Register git hooks: pre-commit install --install-hooks
 
 repos:
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1 # `isort`のバージョンを指定
-    hooks:
-      - id: isort
+  # - repo: https://github.com/pre-commit/mirrors-isort
+  #   rev: v5.10.1 # `isort`のバージョンを指定
+  #   hooks:
+  #     - id: isort
 
-  - repo: https://github.com/myint/autoflake
-    rev: v1.4
-    hooks:
-      - id: autoflake
-        args:
-          - --in-place
-          - --recursive
-          - --expand-star-imports
-          - --remove-all-unused-imports
-          - --ignore-init-module-imports
-          - --remove-unused-variables
+  # - repo: https://github.com/myint/autoflake
+  #   rev: v1.4
+  #   hooks:
+  #     - id: autoflake
+  #       args:
+  #         - --in-place
+  #         - --recursive
+  #         - --expand-star-imports
+  #         - --remove-all-unused-imports
+  #         - --ignore-init-module-imports
+  #         - --remove-unused-variables
 
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
+  # flake8, isort, autoflakeはより高速で一元管理可能なruffに置き換える
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.1.14
     hooks:
-      - id: black
-        args:
-          - app/
+      # Run the linter.
+      - id: ruff
+        args: [--fix]
+      # Run the formatter.
+      - id: ruff-format
+
+  # - repo: https://github.com/psf/black
+  #   rev: 24.1.1
+  #   hooks:
+  #     - id: black
+  #       args:
+  #         - app/
 
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v0.942

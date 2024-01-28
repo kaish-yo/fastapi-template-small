@@ -4,6 +4,7 @@ from logging import getLogger
 
 import pyodbc
 from sqlalchemy import create_engine, text
+
 # from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -21,8 +22,12 @@ password = settings.DATABASE_PASSWORD
 driver = pyodbc.drivers()[-1]
 
 # define the connection string to the SQL Server
-connection_string = f"Driver={driver};Server=tcp:{server},1433;Database={database};Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
-connection_string = connection_string.replace("\r", "").replace(
+connection_string = f"Driver={driver};Server=tcp:{server},1433;Database={database}; \
+    Uid={username};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+
+connection_string = connection_string.replace(
+    "\r", ""
+).replace(
     "\n", ""
 )  # for some reason some special charactors are added and causes errors without this line of code.
 
